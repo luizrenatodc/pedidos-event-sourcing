@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pedidos com event sourcing</title>
+<link rel="stylesheet" href="estilo.css">
+<style>
+.corpo{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:16px;align-items:start}
+tbody tr{cursor:pointer}
+tbody tr:hover,tbody tr.ativo{background:var(--ink3)}
+.evento{display:grid;grid-template-columns:34px 1fr;gap:8px;padding:7px 0;border-bottom:1px solid var(--linha)}
+.evento:last-child{border:0}
+.evento b{font-weight:600}
+.evento small{color:var(--nevoa);display:block;word-break:break-word}
+.versao{font:600 11px "JetBrains Mono",Consolas,monospace;color:var(--acento);padding-top:2px}
+.fluxo{font:11.5px "JetBrains Mono",Consolas,monospace;color:var(--nevoa)}
+.medidor{height:7px;background:var(--ink);border-radius:9px;overflow:hidden;display:flex;margin-top:4px}
+.medidor i{display:block}
+.novo{display:grid;grid-template-columns:1.4fr 1.2fr 70px 1.2fr auto;gap:8px}
+@media (max-width:1180px){.corpo{grid-template-columns:1fr 1fr}.novo{grid-template-columns:1fr 1fr}}
+@media (max-width:760px){.corpo{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="topo">
+  <div class="marca">Pedidos com <b>event sourcing</b></div>
+  <div class="sub">saga, outbox e projeções reconstruíveis</div>
+  <div class="fim"><span class="nevoa" id="aviso"></span><button class="fantasma" id="reconstruir">Reconstruir projeções</button></div>
+</header>
+<main class="pagina">
+  <section class="grade g4" id="kpis"></section>
+  <form class="cartao novo" id="novo">
+    <input id="cliente" aria-label="Cliente" value="Bia Torres" required>
+    <select id="sku" aria-label="Produto"></select>
+    <input id="qtd" aria-label="Quantidade" type="number" min="1" value="1">
+    <select id="cartao" aria-label="Cartão de teste">
+      <option value="4111">Cartão aprovado</option>
+      <option value="0000">Cartão recusado</option>
+      <option value="5030">Gateway instável</option>
+    </select>
+    <button>Criar pedido</button>
+  </form>
+  <section class="corpo">
+    <div class="cartao rolagem"><h2>Pedidos (projeção)</h2><table><thead><tr><th>Cliente</th><th>Total</th><th>Status</th></tr></thead><tbody id="pedidos"></tbody></table></div>
+    <div class="cartao"><h2 id="tituloEventos">Eventos do pedido</h2><div id="eventos"></div></div>
+    <div class="grade">
+      <div class="cartao"><h2>Estoque</h2><div id="estoque"></div></div>
+      <div class="cartao"><h2>Log global</h2><div id="log"></div></div>
+    </div>
+  </section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
